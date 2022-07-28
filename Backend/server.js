@@ -10,6 +10,7 @@ process.on("uncaughtException", (err) => {
 });
 // console.log(first);
 dotenv.config({ path: "Backend/Config/config.env" });
+
 connect();
 const server = app.listen(process.env.PORT, () => {
   console.log("Server listening on port " + process.env.PORT);

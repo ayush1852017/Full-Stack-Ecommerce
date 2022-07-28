@@ -1,69 +1,50 @@
-// let arr = [5, 3, 4];
-// let n = 3;
-// let k = 4;
-// let sum = 0;
-// let ans = [];
-// for (let i = 0; i < n; i++) {
-//     for(let j = 1; j < 2; j++) {
-//     if(arr[i])
-// }
+function binarySearch(arr, k) {
+  let s = 0,
+    e = arr.length - 1;
 
-function prefixGCD(arr, N) {
-  arr.sort();
-  arr = reverse(arr);
-  let gcc = arr[0];
-  let start = 0;
+  while (s <= e) {
+    let mid = parseInt((s + e) / 2);
 
-  while (start < N - 1) {
-    let g = 0,
-      s1 = 0;
+    if (arr[mid] === k) return mid;
+    else if (arr[mid] < k) start = mid + 1;
+    else end = mid - 1;
+  }
 
-    for (let i = start + 1; i < N; i++) {
-      let gc = __gcd(gcc, arr[i]);
+  return -1;
+}
+function count(k, y, n, stack) {
+  if (k == 0) return 0;
 
-      if (gc > g) {
-        g = gc;
-        s1 = i;
-      }
+  if (k == 1) return stack[0];
+
+  var idx = binarySearch(y, k);
+  var ans;
+  if (idx < 0) {
+    idx = Math.abs(idx + 1);
+    ans = y.length - idx;
+  } else {
+    while (idx < n && y[idx] == k) {
+      idx++;
     }
-
-    gcc = g;
-
-    arr = swap(arr, s1, start + 1);
-
-    start++;
+    ans = y.length - idx;
   }
+  ans += stack[0] + stack[1];
 
-  for (let i = 0; i < N; i++) {
-    console.log(arr[i] + " ");
-  }
+  if (k == 2) ans -= stack[3] + stack[4];
+
+  if (k == 3) ans += stack[2];
+
+  return ans;
 }
 
-function __gcd(a, b) {
-  return b == 0 ? a : __gcd(b, a % b);
+function countPairs(k, y, m, n) {
+  var stack = Array(5).fill(-1);
+  for (var i = 0; i < n; i++) if (y[i] < 5) stack[y[i]]++;
+
+  y.sort((a, b) => a - b);
+
+  var total = 0;
+  for (var i = 0; i < m; i++) total += count(k[i], y, n, stack);
+
+  return total;
 }
-
-function reverse(a) {
-  let i,
-    n = a.length,
-    t;
-  for (i = 0; i < n / 2; i++) {
-    t = a[i];
-    a[i] = a[n - i - 1];
-    a[n - i - 1] = t;
-  }
-  return a;
-}
-
-function swap(arr, i, j) {
-  let temp = arr[i];
-  arr[i] = arr[j];
-  arr[j] = temp;
-  return arr;
-}
-
-let arr = [1, 2, 3, 4];
-
-let N = arr.length;
-
-prefixGCD(arr, N);
